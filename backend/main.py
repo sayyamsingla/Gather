@@ -20,6 +20,8 @@ MOOD_TO_TYPES = {
 }
 class UserPreferences(BaseModel):
     location: str
+    latitude: float | None = None
+    longitude: float | None = None
     mood : str
     group_type: str
     indoor_outdoor : str
@@ -35,42 +37,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.post("/recommendations") 
-# async def get_recommendations(preferences: UserPreferences):
-    
-
-#     activity_types = MOOD_TO_TYPES.get(preferences.mood, ["restaurant", "park", "cafe"])
-
-#     places = await search_nearby_places(
-#         location=preferences.location,
-#         activity_types=activity_types,
-#         radius=preferences.radius
-#     )
-#     recommendations = []
-#     for i, place in enumerate(places):
-#             recommendations.append({
-#                 "rank": i + 1,
-#                 "name": place["name"],
-#                 "address": place["address"],
-#                 "rating": place["rating"],
-#                 "open_now": place["open_now"],
-#                 "price_level": place["price_level"],
-#                 "explanation": f"Stub explanation for {preferences.mood} mood",
-#                 "match_score": 0,
-#             })
-#     # print(len(recommendations))
-#     recommendations = rank_with_claude(recommendations, preferences)
-#     return {"recommendations": recommendations}
-
 
 @app.post("/recommendations")
 async def get_recommendations(preferences: UserPreferences):
+    if preferences.latitude and  preferences.longitude:
+        coords = {"latitude": preferences.latitude, "longitude": preferences.longitude }
+    else:
+        try:
+            coords = await geocode_location(preferences.location)
+        except ValueError:
+            return {"error": "Could not find that location. Please try being more specific."}
+                
     activity_types = MOOD_TO_TYPES.get(preferences.mood, ["restaurant", "park", "cafe"])
 
     places = await search_nearby_places(
         location=preferences.location,
         activity_types=activity_types,
-        radius=preferences.radius
+        radius=preferences.radius,
+        coords=coords
     )
 
     recommendations = rank_with_claude(places, preferences)
@@ -80,7 +64,7 @@ async def get_recommendations(preferences: UserPreferences):
 async def health():
     return{"status" : "ok"}
 
-async def search_nearby_places(location : str, activity_types: list[str], radius: int) -> list[dict]: 
+async def search_nearby_places(location : str, activity_types: list[str], radius: int, coords: dict) -> list[dict]: 
     api_key = os.getenv("GOOGLE_PLACES_API_KEY")
 
     url = "https://places.googleapis.com/v1/places:searchNearby"
@@ -97,10 +81,10 @@ async def search_nearby_places(location : str, activity_types: list[str], radius
         "locationRestriction": {
             "circle": {
                 "center": {
-                    "latitude": 49.2827,   # hardcoded Vancouver for now
-                    "longitude": -123.1207
+                    "latitude": coords["latitude"],   
+                    "longitude": coords["longitude"]
                 },
-                "radius": radius  # 2km radius
+                "radius": radius  
             }
         }
     }
@@ -200,3 +184,26 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
     response_text = response_text.strip()
     ranked = json.loads(response_text)
     return ranked
+
+async def geocode_location(location : str) -> dict: 
+    api_key = os.getenv("GOOGLE_PLACES_API_KEY")
+
+    url = "https://maps.googleapis.com/maps/api/geocode/json"
+
+    params = {
+        "address": location,
+        "key": api_key
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params)
+        data = response.json()
+
+    if data["status"] != "OK" or not data["results"]:
+        raise ValueError(f"Could not geocode location: {location}")
+
+    coords = data["results"][0]["geometry"]["location"]
+    return {
+        "latitude": coords["lat"],
+        "longitude": coords["lng"]
+    }
