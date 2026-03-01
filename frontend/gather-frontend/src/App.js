@@ -42,7 +42,7 @@ export default function App() {
     setError(null);
 
     try {
-      const response = await fetch("http://52.60.154.105/recommendations", {
+      const response = await fetch("https://gatherapp.live/recommendations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
