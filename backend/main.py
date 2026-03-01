@@ -12,7 +12,7 @@ app = FastAPI()
 
 MOOD_TO_TYPES = {
     "Adventurous": ["zoo" ,"park", "hiking_area", "camping_cabin", "go_karting_venue"],
-    "Relaxed": ["cafe", "spa", "movie_theater", "book_store, video_arcade", "museum"],
+    "Relaxed": ["cafe", "spa", "movie_theater", "book_store", "video_arcade", "museum"],
     "Social": ["restaurant", "bar", "bowling_alley", "shopping_mall", "night_club", "university"],
    ## "Creative": ["art_gallery", "museum", "university"],
     "Hungry": ["fast_food_restaurant", "restaurant", "food_court"],
