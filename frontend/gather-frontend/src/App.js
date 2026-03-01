@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const moods = ["Adventurous", "Relaxed", "Social", "Creative", "Romantic", "Active"];
+const moods = ["Adventurous", "Relaxed", "Social", "Hungry", "Romantic", "Active"];
 const groupTypes = ["Solo", "Date", "Friends", "Family"];
 const colors = ["#4ade80", "#a78bfa", "#60a5fa", "#fb923c", "#f59e0b"];
 
