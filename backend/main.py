@@ -31,7 +31,7 @@ class UserPreferences(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://gather-ruddy.vercel.app"],
+    allow_origins=["https://gatherapp.live", "https://www.gatherapp.live"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
