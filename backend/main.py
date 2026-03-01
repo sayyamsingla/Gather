@@ -11,11 +11,12 @@ load_dotenv()
 app = FastAPI()
 
 MOOD_TO_TYPES = {
-    "Adventurous": ["park", "hiking_area", "ski_resort"],
-    "Relaxed": ["cafe", "spa", "library", "book_store"],
-    "Social": ["restaurant", "bar", "bowling_alley", "shopping_mall"],
-    "Creative": ["art_gallery", "museum", "university"],
-    "Romantic": ["restaurant", "aquarium", "botanical_garden", "wine_bar"],
+    "Adventurous": ["zoo" ,"park", "hiking_area", "camping_cabin", "go_karting_venue"],
+    "Relaxed": ["cafe", "spa", "movie_theater", "book_store, video_arcade", "museum"],
+    "Social": ["restaurant", "bar", "bowling_alley", "shopping_mall", "night_club", "university"],
+   ## "Creative": ["art_gallery", "museum", "university"],
+    "Hungry": ["fast_food_restaurant", "restaurant", "food_court"],
+    "Romantic": ["art_gallery", "restaurant", "aquarium", "botanical_garden", "wine_bar", "miniature_golf_course"],
     "Active": ["gym", "swimming_pool", "tennis_court", "park"],
 }
 class UserPreferences(BaseModel):
