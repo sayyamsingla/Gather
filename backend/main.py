@@ -11,12 +11,12 @@ load_dotenv()
 app = FastAPI()
 
 MOOD_TO_TYPES = {
-    "Adventurous": [ "park", "hiking_area", "camping_cabin", "go_karting_venue"],
-    "Relaxed": ["cafe", "spa", "library", "garden", "book_store"],
-    "Social": ["Mall", "restaurant", "bar", "bowling_alley", "comedy_club", "food_court"],
-    "Creative": ["art_gallery", "museum", "sculpture_garden", "performing_arts_theater", "university"],
-    "Romantic": ["restaurant", "wine_bar", "jazz_club", "aquarium", "botanical_garden"],
-    "Active": ["gym", "swimming_pool", "tennis_court", "sports_complex", "yoga_studio"],
+    "Adventurous": ["park", "hiking_area", "ski_resort"],
+    "Relaxed": ["cafe", "spa", "library", "book_store"],
+    "Social": ["restaurant", "bar", "bowling_alley", "shopping_mall"],
+    "Creative": ["art_gallery", "museum", "university"],
+    "Romantic": ["restaurant", "aquarium", "botanical_garden", "wine_bar"],
+    "Active": ["gym", "swimming_pool", "tennis_court", "park"],
 }
 class UserPreferences(BaseModel):
     location: str
@@ -35,10 +35,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/recommendations") 
-async def get_recommendations(preferences: UserPreferences):
+# @app.post("/recommendations") 
+# async def get_recommendations(preferences: UserPreferences):
     
 
+#     activity_types = MOOD_TO_TYPES.get(preferences.mood, ["restaurant", "park", "cafe"])
+
+#     places = await search_nearby_places(
+#         location=preferences.location,
+#         activity_types=activity_types,
+#         radius=preferences.radius
+#     )
+#     recommendations = []
+#     for i, place in enumerate(places):
+#             recommendations.append({
+#                 "rank": i + 1,
+#                 "name": place["name"],
+#                 "address": place["address"],
+#                 "rating": place["rating"],
+#                 "open_now": place["open_now"],
+#                 "price_level": place["price_level"],
+#                 "explanation": f"Stub explanation for {preferences.mood} mood",
+#                 "match_score": 0,
+#             })
+#     # print(len(recommendations))
+#     recommendations = rank_with_claude(recommendations, preferences)
+#     return {"recommendations": recommendations}
+
+
+@app.post("/recommendations")
+async def get_recommendations(preferences: UserPreferences):
     activity_types = MOOD_TO_TYPES.get(preferences.mood, ["restaurant", "park", "cafe"])
 
     places = await search_nearby_places(
@@ -46,21 +72,8 @@ async def get_recommendations(preferences: UserPreferences):
         activity_types=activity_types,
         radius=preferences.radius
     )
-    recommendations = []
-    for i, place in enumerate(places):
-        if place["open_now"] is not False:
-            recommendations.append({
-                "rank": i + 1,
-                "name": place["name"],
-                "address": place["address"],
-                "rating": place["rating"],
-                "open_now": place["open_now"],
-                "price_level": place["price_level"],
-                "explanation": f"Stub explanation for {preferences.mood} mood",
-                "match_score": 0,
-            })
-    # print(len(recommendations))
-    recommendations = rank_with_claude(recommendations, preferences)
+
+    recommendations = rank_with_claude(places, preferences)
     return {"recommendations": recommendations}
 
 @app.get("/health")
@@ -147,6 +160,10 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
     - If they want outdoor, prioritize outdoor activities
     - If open_now is Unknown, mention they should verify hours before going
     - Be specific — mention the actual place name and why it fits THEIR constraints
+    - Deprioritize places where open_now is False but still include 
+        them if they are the best fit — mention in the explanation 
+        that the user should verify current hours
+    -Copy open_now and rating exactly as given from the place data above
 
     Return your response as a JSON array with this exact format:
     [
@@ -154,7 +171,9 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
         "rank": 1,
         "name": "place name exactly as given",
         "match_score": 95,
-        "explanation": "your 2 sentence explanation here"
+        "explanation": "your 2 sentence explanation here",
+        "open_now": true,
+        "rating": 4.5
     }}
     ]
 
@@ -172,7 +191,7 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
 
     print(message.content)
 
-        # Strip markdown code fences if Claude added them
+    # Strip markdown code fences if Claude added them
     response_text = response_text.strip()
     if response_text.startswith("```"):
         response_text = response_text.split("\n", 1)[1]  # remove first line
