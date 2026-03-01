@@ -4,10 +4,18 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os 
 import httpx
+
 load_dotenv()
 app = FastAPI()
 
-
+MOOD_TO_TYPES = {
+    "Adventurous": ["park", "hiking_area", "camping_cabin", "adventure_sports_center", "climbing_gym"],
+    "Relaxed": ["cafe", "spa", "library", "garden", "book_store"],
+    "Social": ["Mall, restaurant", "bar", "bowling_alley", "comedy_club", "food_court"],
+    "Creative": ["art_gallery", "museum", "sculpture_garden", "performing_arts_theater", "university"],
+    "Romantic": ["restaurant", "wine_bar", "jazz_club", "aquarium", "botanical_garden"],
+    "Active": ["gym", "swimming_pool", "tennis_court", "sports_complex", "yoga_studio"],
+}
 class UserPreferences(BaseModel):
     location: str
     mood : str
@@ -27,11 +35,13 @@ app.add_middleware(
 @app.post("/recommendations") 
 async def get_recommendations(preferences: UserPreferences):
     
-    places = await search_nearby_places(
-        location = preferences.location,
-        activity_types=["restaurant", "park", "museum", "cafe"]
-    )
 
+    activity_types = MOOD_TO_TYPES.get(preferences.mood, ["restaurant", "park", "cafe"])
+
+    places = await search_nearby_places(
+        location=preferences.location,
+        activity_types=activity_types
+    )
     recommendations = []
     for i, place in enumerate(places):
         recommendations.append({
