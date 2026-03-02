@@ -76,7 +76,7 @@ async def search_nearby_places(location : str, activity_types: list[str], radius
 
     body = {
         "includedTypes": activity_types,
-        "maxResultCount": 10,
+        "maxResultCount": 20,
         "locationRestriction": {
             "circle": {
                 "center": {
@@ -133,7 +133,7 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
     {places_text}
 
     Your job:
-    1. Rank the top 5 activities from the list by how well they fit this specific user
+    1. Rank the top 10 activities from the list by how well they fit this specific user
     2. Give each a match score out of 100
     3. Write a 2 sentence explanation for each that references their specific mood, budget, and time — be concrete, not generic
 
