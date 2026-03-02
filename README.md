@@ -7,7 +7,7 @@
 
 ---
 
-**DEMO https://github.com/user-attachments/assets/f60fc8bb-f62e-4fed-868f-0c3664de9061
+**DEMO** https://github.com/user-attachments/assets/f60fc8bb-f62e-4fed-868f-0c3664de9061
 
 ## What It Does
 
