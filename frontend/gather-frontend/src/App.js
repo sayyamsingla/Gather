@@ -156,7 +156,7 @@ export default function App() {
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                 }}>
-                  📍 {coords ? "Located" : "Use my location"}
+                 📍 {coords ? "✓" : "Locate"}
                 </button>
               </div>
             </Field>
