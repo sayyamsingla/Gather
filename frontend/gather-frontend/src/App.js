@@ -312,7 +312,7 @@ export default function App() {
                                   style={{ color: "inherit", textDecoration: "none" }}
                                   >
                                 <div style={{ fontSize: 18, fontWeight: 500, marginBottom: 2 }}>
-                                    {r.name} <span style={{ fontSize: 12, color: "#6b7280" }}>↗</span>
+                                    {r.name} <span style={{ fontSize: 12, color: "#6b7280" }}>🔗</span>
                                 </div>
                               </a>
                             <div style={{ fontSize: 12, color: "#6b7280", fontFamily: "monospace" }}>{r.address}</div>
