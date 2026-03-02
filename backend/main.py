@@ -167,7 +167,7 @@ def rank_with_claude(places: list[dict], preferences: UserPreferences) -> list[d
     
     message = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=1024,
+        max_tokens=3000,
         messages=[{"role": "user", "content": prompt}]
     )
     response_text = message.content[0].text
