@@ -11,7 +11,7 @@ export default function App() {
   const [budget, setBudget] = useState(30);
   const [time, setTime] = useState(2);
   const [outdoor, setOutdoor] = useState(null);
-  const [location, setLocation] = useState("Vancouver, BC");
+  const [location, setLocation] = useState("");
   const [expanded, setExpanded] = useState(null);
   const [radius, setRadius] = useState(5000);
   const [recommendations, setRecommendations] = useState([]);
