@@ -2,9 +2,12 @@
 
 **AI-powered activity recommendations for you and your group — based on your mood, budget, and time.**
 
+
 🌐 **Live at [gatherapp.live](https://gatherapp.live)**
 
 ---
+
+**DEMO https://github.com/user-attachments/assets/f60fc8bb-f62e-4fed-868f-0c3664de9061
 
 ## What It Does
 
