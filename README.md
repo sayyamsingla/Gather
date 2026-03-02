@@ -170,15 +170,6 @@ App runs at `http://localhost:3000`.
 - **Frontend** — Vercel, auto-deploys on push to `main`
 - **SSL** — Let's Encrypt via Certbot, auto-renews
 
-To update the backend after pushing:
-
-```bash
-ssh -i ~/.ssh/gather-key.pem ubuntu@52.60.154.105
-cd ~/Gather/backend
-git pull
-sudo systemctl restart gather
-```
-
 ---
 
 ## Environment Variables
@@ -187,8 +178,6 @@ sudo systemctl restart gather
 |---|---|
 | `GOOGLE_PLACES_API_KEY` | Google Cloud API key with Places + Geocoding enabled |
 | `ANTHROPIC_API_KEY` | Anthropic API key |
-
-Never commit `.env` to GitHub — it's in `.gitignore`.
 
 ---
 
