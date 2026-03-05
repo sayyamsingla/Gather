@@ -156,7 +156,7 @@ export default function App() {
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                 }}>
-                 📍 {coords ? "✓" : "Locate"}
+                  📍 {coords ? "✓" : "Locate"}
                 </button>
               </div>
             </Field>
@@ -304,17 +304,17 @@ export default function App() {
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                           <div>
                             {/* <div style={{ fontSize: 18, fontWeight: 500, marginBottom: 2 }}>{r.name}</div> */}
-                            <a 
-                                href={`https://www.google.com/maps/search/${encodeURIComponent(r.name + " " + r.address)}`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  onClick={e => e.stopPropagation()}
-                                  style={{ color: "inherit", textDecoration: "none" }}
-                                  >
-                                <div style={{ fontSize: 18, fontWeight: 500, marginBottom: 2 }}>
-                                    {r.name} <span style={{ fontSize: 12, color: "#6b7280" }}>🔗</span>
-                                </div>
-                              </a>
+                            <a
+                              href={`https://www.google.com/maps/search/${encodeURIComponent(r.name + " " + r.address)}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={e => e.stopPropagation()}
+                              style={{ color: "inherit", textDecoration: "none" }}
+                            >
+                              <div style={{ fontSize: 18, fontWeight: 500, marginBottom: 2 }}>
+                                {r.name} <span style={{ fontSize: 12, color: "#6b7280" }}>🔗</span>
+                              </div>
+                            </a>
                             <div style={{ fontSize: 12, color: "#6b7280", fontFamily: "monospace" }}>{r.address}</div>
                           </div>
                           <div style={{
@@ -378,6 +378,9 @@ export default function App() {
             </p>
           </div>
         )}
+        <div style={{ textAlign: "center", marginTop: 48, paddingBottom: 24, fontSize: 12, color: "#6b7280", fontFamily: "monospace" }}>
+          &copy; {new Date().getFullYear()} All rights reserved to Sayyam Singla
+        </div>
       </div>
 
       <style>{`
