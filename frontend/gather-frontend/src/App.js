@@ -83,11 +83,6 @@ export default function App() {
       position: "relative",
       overflow: "hidden",
     }}>
-      <div style={{
-        position: "fixed", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 80% 60% at 50% -10%, #1a1040 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 80%, #0d2818 0%, transparent 60%)",
-        zIndex: 0,
-      }} />
 
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
 
